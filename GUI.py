@@ -9,9 +9,6 @@ def page_4():
     rec.geometry('1500x750')
     l=tk.Label(rec ,bg='gold' ,width=55 ,height=2 ,font=('Courier New', 30) ,text='搭啦' )
     l.pack()
-    
-    t = tk.text(rec, bg="RosyBrown",width=55 ,height=20)
-    t.pack()
 
 def page_3():
     try:
