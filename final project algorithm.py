@@ -89,28 +89,22 @@ def match_point(given_ing, recipe_ing):  # 給的食材、不吃的食材、食�
 
 daily_item = {"鹽", "海鹽", "鹽巴", "糖", "二號砂糖", "貳砂糖", "細砂糖", "砂糖", "白糖", "胡椒", "黑胡椒",
 "胡椒粉", "黑胡椒粉", "醬油", "醋", "油", "沙拉油", "食用油", "水", "飲用水", "開水"}
+delete_item = {'(':')', '[':']', '（':'）'}
+or_item = ['/', 'or', '或']
 
 def str_process(input_list):
     recipe_list = input_list.split('--')  # 食譜上的食材
 
     for i in range(len(recipe_list)):
         food = recipe_list[i]
-        index_num1 = food.find('(')  # 處理()
-        if '（' in food:
-            index_num1 = food.find('（')  # 處理（）
-        index_num2 = food.find('或')  # 處理"或"
-        if 'or' in food:
-            index_num1 = food.find('or')  # 處理"or"
-        index_num_min = min(index_num1, index_num2)
-        index_num_max = max(index_num1, index_num2)
-        if index_num_min == -1:
-            index_num = index_num_max
-        else:
-            index_num = index_num_min
-        if index_num_max != -1:
-            recipe_list[i] = food[:index_num]
+        for a in or_item:  # 處理一個單位的or_item例如:
+            if a in food:
+                recipe_list[i] = food[:food.find(a)]
+        for a in delete_item:  # 處理兩個包夾的delete_item例如:()
+            if a in food:
+                recipe_list[i] = food.replace(food[food.find(a):food.find(delete_item[a])+1], '')
 
-    daily_list = []
+    daily_list = []  # 處理日常食材(要刪掉)
     for food in recipe_list:
         if food in daily_item:
             daily_list.append(recipe_list.index(food))
