@@ -3,7 +3,7 @@ def page_4():
         import Tkinter as tk
     except:
         import tkinter as tk
-    
+
     rec = tk.Tk()
     rec.title("剩菜小幫手")  # 此應用程式的名字
     rec.geometry('1500x750')
@@ -15,7 +15,7 @@ def page_3():
         import Tkinter as tk
     except:
         import tkinter as tk
-    
+
     rec = tk.Tk()
     rec.title("剩菜小幫手")  # 此應用程式的名字
     rec.geometry('1500x750')
@@ -29,7 +29,7 @@ def page_3():
     botton2.pack()
     botton3=tk.Radiobutton(rec ,height=1 ,font = ('Courier New', 20), text='最新食譜', indicatoron=False)
     botton3.pack()
-    
+
     """
     換頁
     """
@@ -38,15 +38,15 @@ def page_3():
         page_4()
     nextpagebtn = tk.Button(rec, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=commandthings)
     nextpagebtn.place(x=450, y=500)
-    
-    rec.mainloop() 
+
+    rec.mainloop()
 
 def page_2():
     try:
         import Tkinter as tk
     except:
-        import tkinter as tk    
-        
+        import tkinter as tk
+
     rec = tk.Tk()
     rec.title("剩菜小幫手")  # 此應用程式的名字
     rec.geometry('1500x750')
@@ -81,15 +81,15 @@ def page_2():
         page_3()
     nextpagebtn = tk.Button(rec, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=commandthings)
     nextpagebtn.place(x=450, y=500)
-    
+
     rec.mainloop()
 
-def page_1():   
+def page_1():
     try:
         import Tkinter as tk
     except:
-        import tkinter as tk    
-        
+        import tkinter as tk
+
     rec = tk.Tk()
     rec.title("剩菜小幫手")  # 此應用程式的名字
     rec.geometry('1500x750')
