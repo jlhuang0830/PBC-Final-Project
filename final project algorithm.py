@@ -1,12 +1,13 @@
-import csv
 import pygsheets
 gc = pygsheets.authorize(service_account_file=r"C:\Users\User\Desktop\PBC-Final-Project-master\pbc-recipe.json")
 sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/121u8inOw4UAGNyb70peVAAwgGGiO4K7ZfqZIHvM3cEQ/edit#gid=0")
 ws = sh.worksheet()
+x= ws.get_all_values(include_tailing_empty=False , include_tailing_empty_rows=False)  #  x is file holder
 
 #測試資料
-target_ingre_list = ["牛肉", "水餃", "蛋"]
+target_ingre_list = ["牛肉", "雞蛋"]
 customer_type = "A"
+ranking_type = "time"
 
 class cuisine():
     def __init__(self, id_num, name, like_num, time, ingredients, link):
@@ -15,7 +16,7 @@ class cuisine():
         self.ingredients = ingredients
         self.time = time
         self.like = like_num
-        self.line = link
+        self.link = link
 
 
 def left_less(a_list):  # a_list is recipe_point_list for every cuisine
@@ -33,7 +34,7 @@ def accumulate_more(b_list):  # b_list is recipe_point_list for every cuisine
 def weight_counting(c_list):  # c_list is given_point_list for every cuisine
     weight_num = 0
     for weight, score in enumerate(c_list):
-        weight_num += weight * score
+        weight_num += (len(c_list) - weight) * score
     return weight_num
 
 
@@ -87,24 +88,25 @@ def match_point(given_ing, recipe_ing):  # 給的食材、不吃的食材、食�
                         recipe_point[j] += 0
     return given_point, recipe_point
 
-daily_item = {"鹽", "海鹽", "鹽巴", "糖", "二號砂糖", "貳砂糖", "細砂糖", "砂糖", "白糖", "胡椒", "黑胡椒",
-"胡椒粉", "黑胡椒粉", "醬油", "醋", "油", "沙拉油", "食用油", "水", "飲用水", "開水"}
+daily_item = {"鹽", "海鹽", "鹽巴", "糖", "二號砂糖", "貳砂糖", "細砂糖", "砂糖", "白糖", "胡椒", "黑胡椒", (
+"胡椒粉"), "黑胡椒粉", "醬油", "醋", "油", "沙拉油", "食用油", "水", "飲用水", "開水"}
 delete_item = {'(':')', '[':']', '（':'）'}
 or_item = ['/', 'or', '或']
 
 def str_process(input_list):
+    print(" in str_process")
     recipe_list = input_list.split('--')  # 食譜上的食材
 
     for i in range(len(recipe_list)):
         food = recipe_list[i]
-        for a in or_item:  # 處理一個單位的or_item例如:
+        for a in or_item:
             if a in food:
                 recipe_list[i] = food[:food.find(a)]
-        for a in delete_item:  # 處理兩個包夾的delete_item例如:()
+        for a in delete_item:
             if a in food:
                 recipe_list[i] = food.replace(food[food.find(a):food.find(delete_item[a])+1], '')
 
-    daily_list = []  # 處理日常食材(要刪掉)
+    daily_list = []
     for food in recipe_list:
         if food in daily_item:
             daily_list.append(recipe_list.index(food))
@@ -113,12 +115,23 @@ def str_process(input_list):
         recipe_list.pop(i)
     return recipe_list
 
+def built_a_dict(a_dict, name, a_record_list, attribute):  # attribute是分數、時間那些的
+    if attribute in a_record_list:  
+        a_dict[attribute] += [name]
+    else:
+        a_dict[attribute] = [name]
+        a_record_list.append(attribute)
+
+
 score_dict = dict()
+time_dict = dict()
+like_dict = dict()
+link_dict = dict()
+id_dict = dict()
 score_list = []
-print("start")
+
 for row_num in range(2, 1000):
-    print(row_num)
-    a_line = ws.get_row(row_num, include_tailing_empty=False)
+    a_line = x[row_num]  # aline 是試算表裡的一列
     if customer_type == "A":
         a_line[4] = str_process(input_list=a_line[4])
         dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
@@ -128,9 +141,12 @@ for row_num in range(2, 1000):
         dish.phase2_score = accumulate_more(dish.recipe_point_list)
         dish.phase3_score = weight_counting(dish.given_point_list)
         dish.total_score = (1000 - dish.phase1_score * 10) + 0.1 * dish.phase2_score + dish.phase3_score * 0.0001
-        score_dict[dish.total_score] = dish.name
-        score_list.append(dish.total_score)
-        print(dish.ingredients, dish.total_score)
+        built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
+        time_dict[dish.name] = dish.time
+        like_dict[dish.name] = dish.like
+        link_dict[dish.name] = dish.link
+        id_dict[dish.name] = dish.id
+
 
     elif customer_type == "B":
         a_line[4] = str_process(input_list=a_line[4])
@@ -141,11 +157,51 @@ for row_num in range(2, 1000):
         dish.phase2_score = left_less(dish.recipe_point_list)
         dish.phase3_score = weight_counting(dish.given_point_list)
         dish.total_score = dish.phase1_score * 10 + (10 - 0.1 * dish.phase2_score) + dish.phase3_score * 0.0001
-        score_dict[dish.total_score] = dish.name
-        score_list.append(dish.total_score)
+        built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
+        time_dict[dish.name] = dish.time
+        like_dict[dish.name] = dish.like
+        link_dict[dish.name] = dish.link
+        id_dict[dish.name] = dish.id
+
+def comparison(a_dict, a_list, output_num):
+    ans_list = []
+    for k in range(len(a_list)):
+        tempt = a_dict[a_list[k]]
+        for l in tempt:
+            if len(ans_list) >= output_num:
+                break
+            ans_list.append(l)
+        if len(ans_list) >= output_num:
+            break
+    return ans_list
 
 score_list.sort(reverse=True)
-for rank in range(10):
-    print(score_dict[score_list[rank]])
+
+top_100 = comparison(a_dict=score_dict, a_list=score_list,output_num=100)
+inv_dict = dict()
+time_list = []
+like_list = []
+link_list = []
+id_list = []
+print(top_100)
+if ranking_type == "like":
+    for a_dish_name in top_100:
+        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=like_list, attribute=like_dict[a_dish_name])
+    like_list.sort(reverse=True)
+    fianl_top_100 = comparison(a_dict=inv_dict, a_list=like_list,output_num=100)
+    print(fianl_top_100)
+
+elif ranking_type == "time":
+    for a_dish_name in top_100:
+        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=time_list, attribute=time_dict[a_dish_name])
+    fianl_top_100 = comparison(a_dict=inv_dict, a_list=time_list,output_num=100)
+    print(fianl_top_100)
+
+elif ranking_type == "new":
+    for a_dish_name in top_100:
+        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=id_list, attribute=id_dict[a_dish_name])
+    id_list.sort(reverse=True)
+    fianl_top_100 = comparison(a_dict=inv_dict, a_list=id_list,output_num=100)
+    print(fianl_top_100)
 
 print("end")
