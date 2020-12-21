@@ -1,5 +1,5 @@
 import pygsheets
-gc = pygsheets.authorize(service_account_file=r"C:\Users\User\Desktop\PBC-Final-Project-master\pbc-recipe.json")
+gc = pygsheets.authorize(service_account_file=r"C:\Users\joseph\Desktop\PBC-Final-Project-master\pbc-recipe.json")
 sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/121u8inOw4UAGNyb70peVAAwgGGiO4K7ZfqZIHvM3cEQ/edit#gid=0")
 ws = sh.worksheet()
 x= ws.get_all_values(include_tailing_empty=False , include_tailing_empty_rows=False)  #  x is file holder
@@ -7,7 +7,7 @@ x= ws.get_all_values(include_tailing_empty=False , include_tailing_empty_rows=Fa
 #測試資料
 target_ingre_list = ["牛肉", "雞蛋"]
 customer_type = "A"
-ranking_type = "time"
+ranking_type = "like"
 
 class cuisine():
     def __init__(self, id_num, name, like_num, time, ingredients, link):
@@ -94,7 +94,6 @@ delete_item = {'(':')', '[':']', '（':'）'}
 or_item = ['/', 'or', '或']
 
 def str_process(input_list):
-    print(" in str_process")
     recipe_list = input_list.split('--')  # 食譜上的食材
 
     for i in range(len(recipe_list)):
@@ -115,13 +114,35 @@ def str_process(input_list):
         recipe_list.pop(i)
     return recipe_list
 
-def built_a_dict(a_dict, name, a_record_list, attribute):  # attribute是分數、時間那些的
-    if attribute in a_record_list:  
+def built_a_dict(a_dict, name, a_record_list, attribute):  # attribute是分數、時間那些的，key為attribute數，value是菜名
+    if attribute in a_record_list:
         a_dict[attribute] += [name]
     else:
         a_dict[attribute] = [name]
         a_record_list.append(attribute)
 
+def arranging(a_dict, a_list):  # dict排序，a_list是attribute分數的list
+    ans_list = []
+    for k in range(len(a_list)):  # dict的value都是list，也就是一群同分的
+        tempt = a_dict[a_list[k]]
+        for l in tempt:
+            ans_list.append(l)
+    return ans_list
+
+def ranking(a_dict, output_num):  # 用人氣、時間、id來排食譜rank
+    for a_dish_group in top_100:  # group為score同分的一群食譜
+        record_list = []
+        for a_dish_name in a_dish_group:  # 同分的來建一個dict，key是讚數或時間或id，value是菜名，key由a_dict決定
+            built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=record_list, attribute=a_dict[a_dish_name])
+        if ranking_type != "time":  # 時間要越少越好所以不用反過來
+            record_list.sort(reverse=True)
+        tempt_top_100 = arranging(a_dict=inv_dict, a_list=record_list)  # 這群score同分的去照attribute數排列
+        for n in range(len(tempt_top_100)):  # 一個個加進來，output看要幾個，超過就跳出
+            if len(final_top_100) >= output_num:
+                break
+            final_top_100.append(tempt_top_100[n])
+        if len(final_top_100) >= output_num:
+            break
 
 score_dict = dict()
 time_dict = dict()
@@ -129,18 +150,21 @@ like_dict = dict()
 link_dict = dict()
 id_dict = dict()
 score_list = []
-
+# 一個cuisine會有以下attribute:
+#id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
 for row_num in range(2, 1000):
     a_line = x[row_num]  # aline 是試算表裡的一列
-    if customer_type == "A":
-        a_line[4] = str_process(input_list=a_line[4])
+    if customer_type == "A":  # 客人要沒中的少
+        a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
         dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
         dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
                                                                     recipe_ing=dish.ingredients)
         dish.phase1_score = left_less(dish.recipe_point_list)
         dish.phase2_score = accumulate_more(dish.recipe_point_list)
         dish.phase3_score = weight_counting(dish.given_point_list)
+        # 開始算分，為了少去一輪一輪比的for，用個十百千的位數來取代輪次當重要性
         dish.total_score = (1000 - dish.phase1_score * 10) + 0.1 * dish.phase2_score + dish.phase3_score * 0.0001
+        # 建一個dict，key是總分，value是菜名，等等排序
         built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
         time_dict[dish.name] = dish.time
         like_dict[dish.name] = dish.like
@@ -163,45 +187,25 @@ for row_num in range(2, 1000):
         link_dict[dish.name] = dish.link
         id_dict[dish.name] = dish.id
 
-def comparison(a_dict, a_list, output_num):
-    ans_list = []
-    for k in range(len(a_list)):
-        tempt = a_dict[a_list[k]]
-        for l in tempt:
-            if len(ans_list) >= output_num:
-                break
-            ans_list.append(l)
-        if len(ans_list) >= output_num:
-            break
-    return ans_list
 
-score_list.sort(reverse=True)
+score_list.sort(reverse=True)  # 總分由大到小
+top_100 =[]  # 按照總分大小排列好的list
+for m in range(len(score_list)):
+    top_100.append(score_dict[score_list[m]])  # 注意此list中每一元都是list，同分的食譜群
 
-top_100 = comparison(a_dict=score_dict, a_list=score_list,output_num=100)
 inv_dict = dict()
-time_list = []
-like_list = []
-link_list = []
-id_list = []
-print(top_100)
+final_top_100 = []  # 用來存最後答案
+
 if ranking_type == "like":
-    for a_dish_name in top_100:
-        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=like_list, attribute=like_dict[a_dish_name])
-    like_list.sort(reverse=True)
-    fianl_top_100 = comparison(a_dict=inv_dict, a_list=like_list,output_num=100)
-    print(fianl_top_100)
+    ranking(a_dict=like_dict, output_num=100)  # 最後輸出一百道菜
+    print(final_top_100)
 
 elif ranking_type == "time":
-    for a_dish_name in top_100:
-        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=time_list, attribute=time_dict[a_dish_name])
-    fianl_top_100 = comparison(a_dict=inv_dict, a_list=time_list,output_num=100)
+    ranking(a_dict=time_dict, output_num=100)
     print(fianl_top_100)
 
 elif ranking_type == "new":
-    for a_dish_name in top_100:
-        built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=id_list, attribute=id_dict[a_dish_name])
-    id_list.sort(reverse=True)
-    fianl_top_100 = comparison(a_dict=inv_dict, a_list=id_list,output_num=100)
+    ranking(a_dict=id_dict, output_num=100)
     print(fianl_top_100)
 
 print("end")
