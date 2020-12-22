@@ -26,7 +26,7 @@ gss_sheet = gss_client.open_by_key(sheet_key).sheet1
 column_name = ['id', '菜名', '讚數', '時間(分鐘)', '食材', '量', '連結']
 # gss_sheet.append_row(column_name) 標題
 
-for id in range(352641, 362000, 6):
+for id in range(298523, 300000):
     url = 'https://icook.tw/recipes/' + str(id)
 
     # recipe.text 內為html全文
@@ -69,8 +69,8 @@ for id in range(352641, 362000, 6):
         ing_attr = {'class': 'ingredient-name'}
         unit_attr = {'class': 'ingredient-unit'}
 
-        ingredients = recipe_soup.find_all('div', ing_attr)
-        units = recipe_soup.find_all('div', unit_attr)
+        ingredients = recipe_soup.find_all('div', attrs=ing_attr)
+        units = recipe_soup.find_all('div', attrs=unit_attr)
 
         ing_ans = str()  # 將此菜色用到的食材以--隔開變成一行
         units_ans = str()  # 將對應的量以--隔開變成一行
