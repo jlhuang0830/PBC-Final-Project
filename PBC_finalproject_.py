@@ -213,24 +213,24 @@ def page_4():
         for a_dish_name in top_100:
             built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=like_list, attribute=like_dict[a_dish_name])
         like_list.sort(reverse=True)
-        fianl_top_100 = comparison(a_dict=inv_dict, a_list=like_list,output_num=100)
-        print(fianl_top_100)
+        final_top_100 = comparison(a_dict=inv_dict, a_list=like_list,output_num=100)
+        print(final_top_100)
 
     elif ranking_type == "time":
         for a_dish_name in top_100:
             built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=time_list, attribute=time_dict[a_dish_name])
-        fianl_top_100 = comparison(a_dict=inv_dict, a_list=time_list,output_num=100)
-        print(fianl_top_100)
+        final_top_100 = comparison(a_dict=inv_dict, a_list=time_list,output_num=100)
+        print(final_top_100)
 
     elif ranking_type == "new":
         for a_dish_name in top_100:
             built_a_dict(a_dict=inv_dict, name= a_dish_name, a_record_list=id_list, attribute=id_dict[a_dish_name])
         id_list.sort(reverse=True)
-        fianl_top_100 = comparison(a_dict=inv_dict, a_list=id_list,output_num=100)
-        print(fianl_top_100)
+        final_top_100 = comparison(a_dict=inv_dict, a_list=id_list,output_num=100)
+        print(final_top_100)
 
     for i in range(len(final_top_100)):  # 輸出final_top_100
-        ans=tk.Label(rec,text=final_top_100[i],font=('Courier New', 30))
+        ans=tk.Label(rec,text=final_top_100[i],font=('Courier New', 20))
         ans.pack()
 
 def page_3():
