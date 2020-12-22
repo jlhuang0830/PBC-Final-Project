@@ -60,19 +60,36 @@ def page_2():
     """
     blank
     """
-    dish1 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 要處理的菜
-    dish1.place(x=130, y=200)
-    dish2 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 要處理的菜
-    dish2.place(x=130, y=300)
-    dish3 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 要處理的菜
-    dish3.place(x=130, y=400)
+    def cr(): 
+        print(data_1.get())
+        print(data_2.get())
+        print(data_3.get())
+        print(dislike_1.get())
+        print(dislike_2.get())
+        print(dislike_3.get())
 
-    dish1 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 不吃的菜
-    dish1.place(x=770, y=200)
-    dish2 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 不吃的菜
-    dish2.place(x=770, y=300)
-    dish3 = tk.Entry(rec, show=None, font=('Courier New', 18), width=25)  ### command= 不吃的菜
-    dish3.place(x=770, y=400)
+    global data_1
+    global data_2
+    global data_3
+    global dislike_1
+    global dislike_2
+    global dislike_3
+    data_1=tk.StringVar()
+    data_2=tk.StringVar()
+    data_3=tk.StringVar()
+    dislike_1=tk.StringVar()
+    dislike_2=tk.StringVar()
+    dislike_3=tk.StringVar()
+    
+    tk.Entry(rec, font='CourierNew 30', textvariable=data_1).place(x=150,y=100)
+    tk.Entry(rec, font='CourierNew 30', textvariable=data_2).place(x=150,y=200)
+    tk.Entry(rec, font='CourierNew 30', textvariable=data_3).place(x=150,y=300)
+    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_1).place(x=750,y=100)
+    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_2).place(x=750,y=200)
+    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_3).place(x=750,y=300)
+    
+    tk.Button(rec, text='確定', command=cr).place(x=600,y=500)
+ 
     """
     換頁
     """
