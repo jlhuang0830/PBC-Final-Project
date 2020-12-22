@@ -152,7 +152,7 @@ id_dict = dict()
 score_list = []
 # 一個cuisine會有以下attribute:
 #id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
-for row_num in range(2, 1000):
+for row_num in range(2, len(x)-1):
     a_line = x[row_num]  # aline 是試算表裡的一列
     if customer_type == "A":  # 客人要沒中的少
         a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
@@ -202,10 +202,9 @@ if ranking_type == "like":
 
 elif ranking_type == "time":
     ranking(a_dict=time_dict, output_num=100)
-    print(fianl_top_100)
+    print(final_top_100)
 
 elif ranking_type == "new":
     ranking(a_dict=id_dict, output_num=100)
-    print(fianl_top_100)
+    print(final_top_100)
 
-print("end")
