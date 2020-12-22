@@ -41,7 +41,7 @@ def page_3():
     
     rec.mainloop() 
 
-def page_2():
+page_2():
     try:
         import Tkinter as tk
     except:
@@ -88,7 +88,7 @@ def page_2():
     tk.Entry(rec, font='CourierNew 30', textvariable=dislike_2).place(x=750,y=200)
     tk.Entry(rec, font='CourierNew 30', textvariable=dislike_3).place(x=750,y=300)
     
-    tk.Button(rec, text='確定', command=cr).place(x=600,y=500)
+    tk.Button(rec, text='確定', command=cr).place(x=600,y=400)
  
     """
     換頁
@@ -97,7 +97,7 @@ def page_2():
         rec.destroy()
         page_3()
     nextpagebtn = tk.Button(rec, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=commandthings)
-    nextpagebtn.place(x=450, y=500)
+    nextpagebtn.place(x=450, y=600)
     
     rec.mainloop()
 
