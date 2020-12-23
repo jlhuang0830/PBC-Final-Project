@@ -6,6 +6,7 @@ x= ws.get_all_values(include_tailing_empty=False , include_tailing_empty_rows=Fa
 
 #測試資料
 target_ingre_list = ["牛肉", "雞蛋"]
+dont_eat_ingre_list = ["茄子“]
 customer_type = "A"
 ranking_type = "like"
 
@@ -154,8 +155,15 @@ score_list = []
 #id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
 for row_num in range(2, len(x)-1):
     a_line = x[row_num]  # aline 是試算表裡的一列
+    a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
+    disgust = False
+    for ingre in dont_eat_ingre_list:
+        if ingre in target_ingre_list:
+            disgust = True
+            break
+    if disgust:
+        continue
     if customer_type == "A":  # 客人要沒中的少
-        a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
         dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
         dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
                                                                     recipe_ing=dish.ingredients)
@@ -173,7 +181,6 @@ for row_num in range(2, len(x)-1):
 
 
     elif customer_type == "B":
-        a_line[4] = str_process(input_list=a_line[4])
         dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
         dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
                                                                     recipe_ing=dish.ingredients)
