@@ -41,7 +41,7 @@ def page_3():
     
     rec.mainloop() 
 
-page_2():
+def page_2():
     try:
         import Tkinter as tk
     except:
@@ -51,52 +51,35 @@ page_2():
     rec.title("剩菜小幫手")  # 此應用程式的名字
     rec.geometry('1500x750')
 
-
     l_f=tk.Label(rec ,bg='MediumAquamarine' ,width=25 ,height=2 ,font=('Courier New', 30) ,text='要消耗的食材' )
     l_f.place(x=30, y=0)
     l_r=tk.Label(rec ,bg='MediumAquamarine' ,width=25 ,height=2 ,font=('Courier New', 30) ,text='不吃的食材' )
     l_r.place(x=650, y=0)
-
+    hint=tk.Label(rec ,bg='gray' ,fg='white',width=80 ,height=1 ,font=('Courier New', 20) ,text='請以空格隔開不同食材')
+    hint.place(x=0,y=100)
+    
     """
     blank
     """
     def cr(): 
         print(data_1.get())
-        print(data_2.get())
-        print(data_3.get())
         print(dislike_1.get())
-        print(dislike_2.get())
-        print(dislike_3.get())
 
     global data_1
-    global data_2
-    global data_3
     global dislike_1
-    global dislike_2
-    global dislike_3
     data_1=tk.StringVar()
-    data_2=tk.StringVar()
-    data_3=tk.StringVar()
     dislike_1=tk.StringVar()
-    dislike_2=tk.StringVar()
-    dislike_3=tk.StringVar()
     
-    tk.Entry(rec, font='CourierNew 30', textvariable=data_1).place(x=150,y=100)
-    tk.Entry(rec, font='CourierNew 30', textvariable=data_2).place(x=150,y=200)
-    tk.Entry(rec, font='CourierNew 30', textvariable=data_3).place(x=150,y=300)
-    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_1).place(x=750,y=100)
-    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_2).place(x=750,y=200)
-    tk.Entry(rec, font='CourierNew 30', textvariable=dislike_3).place(x=750,y=300)
-    
-    tk.Button(rec, text='確定', command=cr).place(x=600,y=400)
- 
+    tk.Entry(rec, font=('CourierNew 30', 20),width=20, textvariable=data_1).place(x=150,y=200)
+    tk.Entry(rec, font=('CourierNew 30', 20),width=20, textvariable=dislike_1).place(x=750,y=200)
+
     """
     換頁
     """
     def commandthings():
         rec.destroy()
         page_3()
-    nextpagebtn = tk.Button(rec, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=commandthings)
+    nextpagebtn = tk.Button(rec, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=lambda:[commandthings(), cr()])
     nextpagebtn.place(x=450, y=600)
     
     rec.mainloop()
