@@ -158,11 +158,11 @@ for row_num in range(2, len(x)-1):
     a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
     disgust = False
     for ingre in dont_eat_ingre_list:
-        if ingre in target_ingre_list:
-            disgust = True
+        if ingre in a_line[4]:
+            disgust = True  #有不吃的東西
             break
     if disgust:
-        continue
+        continue  #到下一行菜
     if customer_type == "A":  # 客人要沒中的少
         dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
         dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
