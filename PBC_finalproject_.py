@@ -3,7 +3,6 @@ gc = pygsheets.authorize(service_account_file=r"C:\Users\User\Desktop\PBC-Final-
 sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/121u8inOw4UAGNyb70peVAAwgGGiO4K7ZfqZIHvM3cEQ/edit#gid=0")
 ws = sh.worksheet()
 x= ws.get_all_values(include_tailing_empty=False , include_tailing_empty_rows=False)  #  x is file holder
-
 #測試資料
 '''
 target_ingre_list = ["牛肉", "雞蛋"]
@@ -159,7 +158,8 @@ GUI
 import tkinter as tk
 import tkinter.ttk as ttk
 
-def create_page_1(): 
+def create_page_1():
+    print('1')
     l=tk.Label(rec1 ,bg='aliceblue' ,width=60 ,height=2 ,font=('Courier New', 30) ,text='今晚我想來點......' )
     l.place(x=0, y=0)
     
@@ -181,6 +181,7 @@ def create_page_1():
 
 
 def create_page_2():
+    print('2')
     l_f=tk.Label(rec2 ,bg='MediumAquamarine' ,width=25 ,height=2 ,font=('Courier New', 30) ,text='要消耗的食材' )
     l_f.place(x=30, y=0)
     l_r=tk.Label(rec2 ,bg='MediumAquamarine' ,width=25 ,height=2 ,font=('Courier New', 30) ,text='不吃的食材' )
@@ -209,24 +210,28 @@ def create_page_2():
     nextpagebtn.place(x=450, y=600)
 
 def create_page_3():
+    print('3')
     l=tk.Label(rec3 ,bg='RosyBrown' ,width=55 ,height=2 ,font=('Courier New', 30) ,text='想要看到甚麼樣的食譜呢?' )
     l.place(x=0, y=0)
     # 選擇ranking_type
-    def like():  # 按讚數排
+    def ranking_like():  # 按讚數排
         global ranking_type
-        ranking_type='like'
-    def time():  # 按製作時間排
+        ranking_type = 'like'
+        print(ranking_type)
+    def ranking_time():  # 按製作時間排
         global ranking_type
-        ranking_type='time'
-    def new():  # 按新舊排
+        ranking_type = 'time'
+        print(ranking_type)
+    def ranking_new():  # 按新舊排
         global ranking_type
-        ranking_type='new'
+        ranking_type = 'new'
+        print(ranking_type)
 
-    botton1=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20) ,text='越夯越好' ,indicatoron=False, activebackground='red', command=like())  ###command= 按讚數排
+    botton1=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20) ,text='越夯越好' , indicatoron=False, activebackground='red', command=ranking_like())  ###command= 按讚數排
     botton1.place(x=550, y=200)
-    botton2=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20) ,text='快速上菜' ,indicatoron=False, activebackground='red', command=time())  ###command= 按製作時間排
+    botton2=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20) ,text='快速上菜' , indicatoron=False, activebackground='red', command=ranking_time())  ###command= 按製作時間排
     botton2.place(x=550, y=300)
-    botton3=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20), text='最新食譜', indicatoron=False, activebackground='red', command=new())  ###command= 按新舊排
+    botton3=tk.Radiobutton(rec3 ,width=9 ,height=1 ,font = ('Courier New', 20), text='最新食譜', indicatoron=False, activebackground='red', command=ranking_new())  ###command= 按新舊排
     botton3.place(x=550, y=400)
     
     nextpagebtn = tk.Button(rec3, text="下一步", width=25 ,height=1, font=('Courier New', 18), command=call_forth_frame_on_top)
@@ -235,85 +240,8 @@ def create_page_3():
 def create_page_4():
     l=tk.Label(rec4 ,bg='gold' ,width=55 ,height=2 ,font=('Courier New', 30) ,text='搭啦' )
     l.pack()
-    '''
-    global customer_type
-    global ranking_type
-    global target_ingre_list
-    global dont_eat_ingre_list
     
-    score_dict = dict()
-    time_dict = dict()
-    like_dict = dict()
-    link_dict = dict()
-    id_dict = dict()
-    score_list = []
-    # 一個cuisine會有以下attribute:
-    #id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
-    for row_num in range(2, len(x)-1):
-        a_line = x[row_num]  # aline 是試算表裡的一列
-        a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
-        disgust = False
-        for ingre in dont_eat_ingre_list:
-            if ingre in a_line[4]:
-                disgust = True  #有不吃的東西
-                break
-        if disgust:
-            continue  #到下一行菜
-        if customer_type == "A":  # 客人要沒中的少
-            dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
-            dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
-                                                                        recipe_ing=dish.ingredients)
-            print(dish.recipe_point_list)
-            dish.phase1_score = left_less(dish.recipe_point_list)
-            dish.phase2_score = accumulate_more(dish.recipe_point_list)
-            dish.phase3_score = weight_counting(dish.given_point_list)
-            # 開始算分，為了少去一輪一輪比的for，用個十百千的位數來取代輪次當重要性
-            dish.total_score = (1000 - dish.phase1_score * 10) + 0.1 * dish.phase2_score + dish.phase3_score * 0.0001
-            # 建一個dict，key是總分，value是菜名，等等排序
-            built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
-            time_dict[dish.name] = dish.time
-            like_dict[dish.name] = dish.like
-            link_dict[dish.name] = dish.link
-            id_dict[dish.name] = dish.id
-
-
-        elif customer_type == "B":
-            dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
-            dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
-                                                                        recipe_ing=dish.ingredients)
-            
-            dish.phase1_score = accumulate_more(dish.recipe_point_list)
-            
-            dish.phase2_score = left_less(dish.recipe_point_list)
-            dish.phase3_score = weight_counting(dish.given_point_list)
-            dish.total_score = dish.phase1_score * 10 + (10 - 0.1 * dish.phase2_score) + dish.phase3_score * 0.0001
-            built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
-            time_dict[dish.name] = dish.time
-            like_dict[dish.name] = dish.like
-            link_dict[dish.name] = dish.link
-            id_dict[dish.name] = dish.id
-
-
-    score_list.sort(reverse=True)  # 總分由大到小
-    top_100 =[]  # 按照總分大小排列好的list
-    for m in range(len(score_list)):
-        top_100.append(score_dict[score_list[m]])  # 注意此list中每一元都是list，同分的食譜群
-
-    inv_dict = dict()
-    final_top_100 = []  # 用來存最後答案
-
-    if ranking_type == "like":
-        ranking(a_dict=like_dict, output_num=100)  # 最後輸出一百道菜
-        print(final_top_100)
-
-    elif ranking_type == "time":
-        ranking(a_dict=time_dict, output_num=100)
-        print(final_top_100)
-
-    elif ranking_type == "new":
-        ranking(a_dict=id_dict, output_num=100)
-        print(final_top_100)
-    '''
+    
 
 def call_second_frame_on_top(): 
     rec1.grid_forget() 
@@ -336,6 +264,7 @@ def call_forth_frame_on_top():
 def quit_program(): 
     rec.destroy()
 
+
 # Start!
 rec = tk.Tk() 
 rec.title("剩菜小幫手")  # 此應用程式的名字
@@ -354,16 +283,23 @@ rec3.grid()
 rec4=ttk.Frame(rec ,width=1500 ,height=750) 
 rec4.grid()
 
+# 預設值
 target_ingre_list = []
 dont_eat_ingre_list = []
 customer_type = 'A'
 ranking_type = 'like'
+score_dict = dict()
+time_dict = dict()
+like_dict = dict()
+link_dict = dict()
+id_dict = dict()
+score_list = []
 
 # Create all widgets to all frames.
-create_page_4()
-create_page_3()
-create_page_2()
 create_page_1()
+create_page_2()
+create_page_3()
+create_page_4()
 
 # Hide all frames in reverse order, but leave first frame visible. 
 rec4.grid_forget()
@@ -372,8 +308,78 @@ rec2.grid_forget()
 
 # Start tkinter event - loop 
 rec.mainloop()
+
+
+# 一個cuisine會有以下attribute:
+#id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
+for row_num in range(2, len(x)-1):
+    a_line = x[row_num]  # aline 是試算表裡的一列
+    a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
+    disgust = False
+    for ingre in dont_eat_ingre_list:
+        if ingre in a_line[4]:
+            disgust = True  #有不吃的東西
+            break
+    if disgust:
+        continue  #到下一行菜
+    if customer_type == "A":  # 客人要沒中的少
+        dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
+        #print(target_ingre_list,dish.ingredients)
+        dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
+                                                                    recipe_ing=dish.ingredients)
+        dish.phase1_score = left_less(dish.recipe_point_list)
+        #print(dish.recipe_point_list)
+        dish.phase2_score = accumulate_more(dish.recipe_point_list)
+        dish.phase3_score = weight_counting(dish.given_point_list)
+        # 開始算分，為了少去一輪一輪比的for，用個十百千的位數來取代輪次當重要性
+        dish.total_score = (1000 - dish.phase1_score * 10) + 0.1 * dish.phase2_score + dish.phase3_score * 0.0001
+        # 建一個dict，key是總分，value是菜名，等等排序
+        built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
+        time_dict[dish.name] = dish.time
+        like_dict[dish.name] = dish.like
+        link_dict[dish.name] = dish.link
+        id_dict[dish.name] = dish.id
+
+
+    elif customer_type == "B":
+        dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
+        dish.given_point_list, dish.recipe_point_list = match_point(given_ing=target_ingre_list,
+                                                                    recipe_ing=dish.ingredients)
+        
+        dish.phase1_score = accumulate_more(dish.recipe_point_list)
+        
+        dish.phase2_score = left_less(dish.recipe_point_list)
+        dish.phase3_score = weight_counting(dish.given_point_list)
+        dish.total_score = dish.phase1_score * 10 + (10 - 0.1 * dish.phase2_score) + dish.phase3_score * 0.0001
+        built_a_dict(a_dict=score_dict, name=dish.name, a_record_list=score_list, attribute=dish.total_score)
+        time_dict[dish.name] = dish.time
+        like_dict[dish.name] = dish.like
+        link_dict[dish.name] = dish.link
+        id_dict[dish.name] = dish.id
+
+
+score_list.sort(reverse=True)  # 總分由大到小
+top_100 =[]  # 按照總分大小排列好的list
+for m in range(len(score_list)):
+    top_100.append(score_dict[score_list[m]])  # 注意此list中每一元都是list，同分的食譜群
+
+inv_dict = dict()
+final_top_100 = []  # 用來存最後答案
+print(ranking_type)
+if ranking_type == "like":
+    ranking(a_dict=like_dict, output_num=100)  # 最後輸出一百道菜
+    print(final_top_100)
+
+elif ranking_type == "time":
+    ranking(a_dict=time_dict, output_num=100)
+    print(final_top_100)
+
+elif ranking_type == "new":
+    ranking(a_dict=id_dict, output_num=100)
+    print(final_top_100)
+
 print(customer_type)
 print(target_ingre_list)
 print(dont_eat_ingre_list)
 print(ranking_type)
-#print(final_top_100)
+print(final_top_100)
