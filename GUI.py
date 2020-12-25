@@ -1,15 +1,3 @@
-###嘗試版
-"""
-網址連結 帶入演算法
-botton 調位子
-
-按按鍵之後的顏色保持，看起來像按下去了
-完全不選不能按下一步  # 不選的話顯示不出來下一步或下一步
-
-(美化)
-(一開始跟最後加個GIF)
-"""
-
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.scrolledtext import ScrolledText
