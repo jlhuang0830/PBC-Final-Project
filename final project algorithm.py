@@ -196,11 +196,11 @@ def create_page_1():
         global customer_type
         customer_type = 'B'
 
-
-    botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='湊一湊就上桌',
+    radioValue = tk.IntVar()
+    botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='湊一湊就上桌',variable=radioValue, value=1,
                              indicatoron=False, activebackground='red',command=lambda:[assignA(), switchButtonState()])  ### command= 剩越少越好
     botton1.place(x=560, y=200)
-    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們 即使要付出代價',
+    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們 即使要付出代價',variable=radioValue, value=2,
                              indicatoron=False, activebackground='red',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
     botton2.place(x=425, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
@@ -263,14 +263,14 @@ def create_page_3():
         global ranking_type
         ranking_type = 'new'
 
-
-    botton1 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='越夯越好',
+    radioValue = tk.IntVar()
+    botton1 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='越夯越好',variable=radioValue, value=1,
                              indicatoron=False,activebackground='red', command=lambda:[ranking_like(), switchButtonState()])  ###command= 按讚數排
     botton1.place(x=550, y=165)
-    botton2 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='快速上菜',
+    botton2 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='快速上菜',variable=radioValue, value=2,
                              indicatoron=False,activebackground='red', command=lambda:[ranking_time(),switchButtonState()])   ###command= 按製作時間排
     botton2.place(x=550, y=265)
-    botton3 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='最新食譜',
+    botton3 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='最新食譜',variable=radioValue, value=3,
                              indicatoron=False,activebackground='red', command=lambda:[ranking_new(), switchButtonState()])  ###command= 按新舊排
     botton3.place(x=550, y=365)
 
