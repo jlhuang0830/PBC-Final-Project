@@ -183,7 +183,7 @@ from tkinter.scrolledtext import ScrolledText
 def create_page_1():
     l = tk.Label(rec1, bg='PowderBlue', width=56, height=2, font=('Courier New', 30), text='今晚我想來點......')
     l.place(x=0, y=0)
-    
+
     def switchButtonState():
         nextpagebtn['state'] = tk.NORMAL
 
@@ -243,7 +243,7 @@ def create_page_2():
 def create_page_3():
     l = tk.Label(rec3, bg='RosyBrown', width=55, height=2, font=('Courier New', 30), text='想要看到甚麼樣的食譜呢?')
     l.place(x=0, y=0)
-    
+
     def switchButtonState():
         extpagebtn['state'] = tk.NORMAL
         nextpagebtn['state'] = tk.NORMAL
@@ -288,8 +288,8 @@ def create_page_4():
         disgust = False
         for ingre in dont_eat_ingre_list:
              if ingre in a_line[4]:
-             disgust = True  #有不吃的東西
-             break
+                 disgust = True  #有不吃的東西
+                 break
         if disgust:
              continue  #到下一行菜
         if customer_type == "A":  # 客人要沒中的少
@@ -428,7 +428,7 @@ rec = tk.Tk()
 rec.title("剩菜小幫手")  # 此應用程式的名字
 rec.geometry('1500x750')
 
-# Create frames inside the root window 
+# Create frames inside the root window
 rec1 = ttk.Frame(rec, width=1500, height=750)
 rec1.grid()
 
@@ -442,9 +442,9 @@ create_page_3()
 create_page_2()
 create_page_1()
 
-# Hide all frames in reverse order, but leave first frame visible. 
+# Hide all frames in reverse order, but leave first frame visible.
 rec3.grid_forget()
 rec2.grid_forget()
 
-# Start tkinter event - loop 
-rec.mainloop() 
+# Start tkinter event - loop
+rec.mainloop()
