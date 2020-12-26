@@ -285,7 +285,13 @@ def create_page_4():
     # id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
     for row_num in range(2, len(x)):
         a_line = x[row_num]  # aline 是試算表裡的一列
-
+        disgust = False
+        for ingre in dont_eat_ingre_list:
+             if ingre in a_line[4]:
+             disgust = True  #有不吃的東西
+             break
+        if disgust:
+             continue  #到下一行菜
         if customer_type == "A":  # 客人要沒中的少
             a_line[4] = str_process(input_list=a_line[4])  # 食材去字串處理
             dish = cuisine(a_line[0], a_line[1], int(a_line[2]), (a_line[3]), a_line[4], a_line[6])
