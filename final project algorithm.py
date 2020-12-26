@@ -2,7 +2,7 @@
 import pygsheets
 import webbrowser
 
-gc = pygsheets.authorize(service_account_file=r"C:\Users\joseph\Desktop\PBC-Final-Project-master\pbc-recipe.json")
+gc = pygsheets.authorize(service_account_file=r"C:\Users\Irene\Desktop\pbc-recipe.json")
 sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/121u8inOw4UAGNyb70peVAAwgGGiO4K7ZfqZIHvM3cEQ/edit#gid=0")
 ws = sh.worksheet()
 x = ws.get_all_values(include_tailing_empty=False, include_tailing_empty_rows=False)  # x is file holder
@@ -183,6 +183,9 @@ from tkinter.scrolledtext import ScrolledText
 def create_page_1():
     l = tk.Label(rec1, bg='PowderBlue', width=56, height=2, font=('Courier New', 30), text='今晚我想來點......')
     l.place(x=0, y=0)
+    
+    def switchButtonState():
+        nextpagebtn['state'] = tk.NORMAL
 
     def assignA():  # customer_type為A(剩越少越好)
         global customer_type
@@ -195,15 +198,13 @@ def create_page_1():
 
 
     botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='湊一湊就上桌',
-                             indicatoron=False, activebackground='red',command=assignA)  ### command= 剩越少越好
+                             indicatoron=False, activebackground='red',command=lambda:[assignA(), switchButtonState()])  ### command= 剩越少越好
     botton1.place(x=560, y=200)
     botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們 即使要付出代價',
-                             indicatoron=False, activebackground='red',command=assignB)  ### command= 處理越多越好
+                             indicatoron=False, activebackground='red',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
     botton2.place(x=425, y=300)
-    nextpagebtn = tk.Button(rec1, text="下一步", width=25, height=1, font=('Courier New', 18),
-                            command=call_second_frame_on_top)
+    nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
     nextpagebtn.place(x=450, y=575)
-
 
 def create_page_2():
     l_f = tk.Label(rec2, bg='MediumAquamarine', width=25, height=2, font=('Courier New', 30), text='要消耗的食材')
@@ -242,6 +243,10 @@ def create_page_2():
 def create_page_3():
     l = tk.Label(rec3, bg='RosyBrown', width=55, height=2, font=('Courier New', 30), text='想要看到甚麼樣的食譜呢?')
     l.place(x=0, y=0)
+    
+    def switchButtonState():
+        extpagebtn['state'] = tk.NORMAL
+        nextpagebtn['state'] = tk.NORMAL
 
     # 選擇ranking_type
     def ranking_like():  # 按讚數排
@@ -260,21 +265,19 @@ def create_page_3():
 
 
     botton1 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='越夯越好',
-                             indicatoron=False,activebackground='red', command=ranking_like)  ###command= 按讚數排
+                             indicatoron=False,activebackground='red', command=lambda:[ranking_like(), switchButtonState()])  ###command= 按讚數排
     botton1.place(x=550, y=165)
     botton2 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='快速上菜',
-                             indicatoron=False,activebackground='red', command=ranking_time)  ###command= 按製作時間排
+                             indicatoron=False,activebackground='red', command=lambda:[ranking_time(),switchButtonState()])   ###command= 按製作時間排
     botton2.place(x=550, y=265)
     botton3 = tk.Radiobutton(rec3, width=9, height=1, font=('Courier New', 20), text='最新食譜',
-                             indicatoron=False,activebackground='red', command=ranking_new)  ###command= 按新舊排
+                             indicatoron=False,activebackground='red', command=lambda:[ranking_new(), switchButtonState()])  ###command= 按新舊排
     botton3.place(x=550, y=365)
 
-    extpagebtn = tk.Button(rec3, text="上一步", width=25, height=1, font=('Courier New', 18),
-                           command=call_second_frame_on_top)
+    extpagebtn = tk.Button(rec3, text="上一步", width=25 ,height=1, font=('Courier New', 18), state=tk.DISABLED, command=call_second_frame_on_top)
     extpagebtn.place(x=450, y=500)
-    nextpagebtn = tk.Button(rec3, text="下一步", width=25, height=1, font=('Courier New', 18), command=create_page_4)
+    nextpagebtn = tk.Button(rec3, text="下一步", width=25 ,height=1, font=('Courier New', 18), state=tk.DISABLED, command=create_page_4)
     nextpagebtn.place(x=450, y=575)
-
 
 def create_page_4():
 
