@@ -26,7 +26,7 @@ gss_sheet = gss_client.open_by_key(sheet_key).sheet1
 column_name = ['id', '菜名', '讚數', '時間(分鐘)', '食材', '量', '連結']
 # gss_sheet.append_row(column_name) 標題
 
-for id in range(298523, 300000):
+for id in range(225557, 250000):
     url = 'https://icook.tw/recipes/' + str(id)
 
     # recipe.text 內為html全文
@@ -44,6 +44,10 @@ for id in range(298523, 300000):
         title = title.replace('\n', '')
         title = title.strip()
         title = strip_emoji(title)
+
+        # 跳過廣告文和副食品
+        if title.find('氣炸鍋') != -1 or title.find('副食品') != -1:
+            continue
 
         # 取得說讚數html
         like_attr = {'class', 'stat-left'}
