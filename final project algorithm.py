@@ -8,9 +8,9 @@ ws = sh.worksheet()
 x = ws.get_all_values(include_tailing_empty=False, include_tailing_empty_rows=False)  # x is file holder
 
 # 測試資料
-target_ingre_list = ["牛肉", "雞蛋"]
-customer_type = "A"
-ranking_type = "like"
+# target_ingre_list = ["牛肉", "雞蛋"]
+# customer_type = "A"
+# ranking_type = "like"
 
 
 class cuisine():
