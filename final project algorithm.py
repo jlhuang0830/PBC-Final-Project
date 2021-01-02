@@ -185,9 +185,9 @@ def create_page_1():
     l = tk.Label(rec1, bg='PowderBlue', width=56, height=2, font=('Courier New', 30), text='今晚我想來點......')
     l.place(x=0, y=0)
     
-    img=tk.PhotoImage(file = '')
-    imLabel=tk.Label(rec1,image=img)
-    imLabel.pack(side=tk.TOP)
+    im = Image.open('')
+    img=ImageTk.PhotoImage(im)
+    imLabel=tk.Label(rec1,image=img).pack(side=tk.TOP)
 
     def switchButtonState():
         nextpagebtn['state'] = tk.NORMAL
