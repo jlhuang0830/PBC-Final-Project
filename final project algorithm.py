@@ -182,13 +182,16 @@ from PIL import ImageTk
 
 
 def create_page_1():
+    im = Image.open("")
+    im = im.resize((1500, 750))
+    img = ImageTk.PhotoImage(im)
+    imLabel = tk.Label(rec1,image=img)
+    imLabel.image = img
+    imLabel.place(x=0, y=0)
+
     l = tk.Label(rec1, bg='PowderBlue', width=56, height=2, font=('Courier New', 30), text='今晚我想來點......')
     l.place(x=0, y=0)
     
-    im = Image.open('')
-    img=ImageTk.PhotoImage(im)
-    imLabel=tk.Label(rec1,image=img).pack(side=tk.TOP)
-
     def switchButtonState():
         nextpagebtn['state'] = tk.NORMAL
 
