@@ -182,7 +182,7 @@ from PIL import ImageTk,Image
 
 
 def create_page_1():
-    im = Image.open("")  # 淺色1號
+    im = Image.open(r"C:\Users\Irene\Desktop\淺色1號.jpg")  # 淺色1號
     im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec1,image=img)
@@ -210,12 +210,12 @@ def create_page_1():
     botton1.place(x=560, y=200)
     botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們',variable=radioValue, value=2,
                              indicatoron=False, selectcolor='PowderBlue',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
-    botton2.place(x=425, y=300)
+    botton2.place(x=510, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
     nextpagebtn.place(x=450, y=475)
 
 def create_page_2():
-    im = Image.open("")  # 淺色2號
+    im = Image.open(r"C:\Users\Irene\Desktop\淺色2號.jpg")  # 淺色2號
     im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec2,image=img)
@@ -256,7 +256,7 @@ def create_page_2():
 
 
 def create_page_3():
-    im = Image.open("")  #淺色3號
+    im = Image.open(r"C:\Users\Irene\Desktop\淺色3號.jpg")  #淺色3號
     im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec3,image=img)
@@ -302,12 +302,7 @@ def create_page_3():
     nextpagebtn.place(x=450, y=550)
 
 def create_page_4():
-    im = Image.open("")  # 深色4號
-    im = im.resize((728, 410))
-    img = ImageTk.PhotoImage(im)
-    imLabel = tk.Label(rec4,image=img)
-    imLabel.image = img
-    imLabel.place(x=100, y=85)
+    
 
     # 一個cuisine會有以下attribute:
     # id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
@@ -383,6 +378,14 @@ def create_page_4():
     recnew = tk.Tk()
     recnew.title("剩菜小幫手")  # 此應用程式的名字
     recnew.geometry('1500x750')
+    
+    # im = Image.open(r"C:\Users\Irene\Desktop\淺色3號.jpg")  # 深色4號
+    # im = im.resize((728, 410))
+    # img = ImageTk.PhotoImage(im)
+    # imLabel = tk.Label(recnew,image=img)
+    # imLabel.image = img
+    # imLabel.place(x=100, y=85)
+    
     l = tk.Label(recnew, bg='gold', width=55, height=2, font=('Courier New', 30), text='搭啦')
     l.pack()
     # text
