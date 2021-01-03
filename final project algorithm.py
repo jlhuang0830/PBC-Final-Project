@@ -256,7 +256,7 @@ def create_page_2():
 
 
 def create_page_3():
-    im = Image.open("C:\\Users\\weish\\Desktop\\淺色3號.jpg")
+    im = Image.open("")  #淺色3號
     im = im.resize((1050, 700)) #1275,600
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec3,image=img)
