@@ -216,7 +216,7 @@ def create_page_1():
     botton1.place(x=560, y=200)
     botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='不要再剩菜了',variable=radioValue, value=2,
                              indicatoron=False, selectcolor='PowderBlue',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
-    botton2.place(x=510, y=300)
+    botton2.place(x=560, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
     nextpagebtn.place(x=450, y=475)
 
