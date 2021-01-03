@@ -100,8 +100,11 @@ or_item = ['/', 'or', '或']
 
 
 def str_process(input_list):
-    recipe_list = input_list.split('--')  # 食譜上的食材
-
+    try:
+        recipe_list = input_list.split('--')  # 食譜上的食材
+    except AttributeError as attribute_error:
+        recipe_list = input_list  # 更改後的input_list不用再做字串處理
+    
     for i in range(len(recipe_list)):
         food = recipe_list[i]
         for a in or_item:
@@ -140,6 +143,8 @@ def arranging(a_dict, a_list):  # dict排序，a_list是attribute分數的list
 
 def ranking(a_dict, output_num):  # 用人氣、時間、id來排食譜rank
     global top_100
+    global final_top_100
+    final_top_100 = []  # 初始化final_top_100(讓更改條件後的排序可以正確地加入)
     for a_dish_group in top_100:  # group為score同分的一群食譜
         record_list = []
         for a_dish_name in a_dish_group:  # 同分的來建一個dict，key是讚數或時間或id，value是菜名，key由a_dict決定
@@ -205,10 +210,10 @@ def create_page_1():
         customer_type = 'B'
 
     radioValue = tk.IntVar()
-    botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='湊一湊就上桌',variable=radioValue, value=1,
+    botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='不想再買菜了',variable=radioValue, value=1,
                              indicatoron=False, selectcolor='PowderBlue',command=lambda:[assignA(), switchButtonState()])  ### command= 剩越少越好
     botton1.place(x=560, y=200)
-    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們',variable=radioValue, value=2,
+    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='不要再剩菜了',variable=radioValue, value=2,
                              indicatoron=False, selectcolor='PowderBlue',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
     botton2.place(x=510, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
