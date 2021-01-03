@@ -182,7 +182,7 @@ from PIL import ImageTk,Image
 
 
 def create_page_1():
-    im = Image.open("")  # 淺色2號
+    im = Image.open("")  # 淺色1號
     im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec1,image=img)
@@ -212,9 +212,16 @@ def create_page_1():
                              indicatoron=False, selectcolor='red',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
     botton2.place(x=425, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
-    nextpagebtn.place(x=450, y=575)
+    nextpagebtn.place(x=450, y=475)
 
 def create_page_2():
+    im = Image.open("")  # 淺色2號
+    im = im.resize((1050, 700)) #1275,600
+    img = ImageTk.PhotoImage(im)
+    imLabel = tk.Label(rec2,image=img)
+    imLabel.image = img
+    imLabel.place(x=100, y=100)
+    
     l_f = tk.Label(rec2, bg='MediumAquamarine', width=25, height=2, font=('Courier New', 30), text='要消耗的食材')
     l_f.place(x=30, y=0)
     l_r = tk.Label(rec2, bg='MediumAquamarine', width=25, height=2, font=('Courier New', 30), text='不吃的食材')
@@ -242,13 +249,20 @@ def create_page_2():
 
     extpagebtn = tk.Button(rec2, text="上一步", width=25, height=1, font=('Courier New', 18),
                            command=call_first_frame_on_top)
-    extpagebtn.place(x=450, y=500)
+    extpagebtn.place(x=450, y=475)
     nextpagebtn = tk.Button(rec2, text="下一步", width=25, height=1, font=('Courier New', 18),
                             command=lambda: [call_third_frame_on_top(), cr()])
-    nextpagebtn.place(x=450, y=575)
+    nextpagebtn.place(x=450, y=550)
 
 
 def create_page_3():
+    im = Image.open("C:\\Users\\weish\\Desktop\\淺色3號.jpg")
+    im = im.resize((1050, 700)) #1275,600
+    img = ImageTk.PhotoImage(im)
+    imLabel = tk.Label(rec3,image=img)
+    imLabel.image = img
+    imLabel.place(x=100, y=100)
+    
     l = tk.Label(rec3, bg='RosyBrown', width=55, height=2, font=('Courier New', 30), text='想要看到甚麼樣的食譜呢?')
     l.place(x=0, y=0)
 
@@ -283,9 +297,9 @@ def create_page_3():
     botton3.place(x=550, y=365)
 
     extpagebtn = tk.Button(rec3, text="上一步", width=25 ,height=1, font=('Courier New', 18), state=tk.DISABLED, command=call_second_frame_on_top)
-    extpagebtn.place(x=450, y=500)
+    extpagebtn.place(x=450, y=475)
     nextpagebtn = tk.Button(rec3, text="下一步", width=25 ,height=1, font=('Courier New', 18), state=tk.DISABLED, command=create_page_4)
-    nextpagebtn.place(x=450, y=575)
+    nextpagebtn.place(x=450, y=550)
 
 def create_page_4():
 
