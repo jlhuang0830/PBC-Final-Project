@@ -1,0 +1,25 @@
+from tkinter import *
+import time
+import os
+
+root_begin = Tk()
+
+frames = [
+ PhotoImage(file=r'C:\Users\User\Desktop\奇的資料夾\二上\python final project\cooking.gif', format='gif -index %i' % (i)) for i
+ in range(31)]
+
+
+def update(ind):
+    frame = frames[ind]
+    ind += 1
+    print(ind)
+    if ind > 30:  # With this condition it will play gif infinitely
+        ind = 0
+    label.configure(image=frame)
+    root_begin.after(100, update, ind)
+
+
+label = Label(root)
+label.pack()
+root_begin.after(0, update, 0)
+root_begin.mainloop()
