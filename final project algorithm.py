@@ -142,9 +142,10 @@ def arranging(a_dict, a_list):  # dict排序，a_list是attribute分數的list
 
 
 def ranking(a_dict, output_num):  # 用人氣、時間、id來排食譜rank
-    global top_100
-    global final_top_100
+    global top_100, final_top_100, inv_dict
     final_top_100 = []  # 初始化final_top_100(讓更改條件後的排序可以正確地加入)
+    inv_dict = {}  # 初始化inv_dict
+    
     for a_dish_group in top_100:  # group為score同分的一群食譜
         record_list = []
         for a_dish_name in a_dish_group:  # 同分的來建一個dict，key是讚數或時間或id，value是菜名，key由a_dict決定
@@ -307,7 +308,9 @@ def create_page_3():
     nextpagebtn.place(x=450, y=550)
 
 def create_page_4():
-    
+    global score_dict, score_list  # 初始化
+    score_dict={}
+    score_list = []
 
     # 一個cuisine會有以下attribute:
     # id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
@@ -355,6 +358,7 @@ def create_page_4():
 
     score_list.sort(reverse=True)  # 總分由大到小
     global top_100  # 按照總分大小排列好的list
+    top_100 = []
     for m in range(len(score_list)):
         top_100.append(score_dict[score_list[m]])  # 注意此list中每一元都是list，同分的食譜群
 
