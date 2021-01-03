@@ -216,7 +216,7 @@ def create_page_1():
 
 def create_page_2():
     im = Image.open("")  # 淺色2號
-    im = im.resize((1050, 700)) #1275,600
+    im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec2,image=img)
     imLabel.image = img
@@ -257,7 +257,7 @@ def create_page_2():
 
 def create_page_3():
     im = Image.open("")  #淺色3號
-    im = im.resize((1050, 700)) #1275,600
+    im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec3,image=img)
     imLabel.image = img
@@ -302,6 +302,12 @@ def create_page_3():
     nextpagebtn.place(x=450, y=550)
 
 def create_page_4():
+    im = Image.open("")  # 深色4號
+    im = im.resize((728, 410))
+    img = ImageTk.PhotoImage(im)
+    imLabel = tk.Label(rec4,image=img)
+    imLabel.image = img
+    imLabel.place(x=100, y=85)
 
     # 一個cuisine會有以下attribute:
     # id、name、like_num、ingredient、link、given_point_list、recipe_point_list、total(phase)_score
