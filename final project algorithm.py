@@ -178,16 +178,16 @@ final_top_100 = []  # 用來存最後答案
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.scrolledtext import ScrolledText
-from PIL import ImageTk
+from PIL import ImageTk,Image
 
 
 def create_page_1():
-    im = Image.open("")
-    im = im.resize((1500, 750))
+    im = Image.open("")  # 淺色2號
+    im = im.resize((1050, 700))
     img = ImageTk.PhotoImage(im)
     imLabel = tk.Label(rec1,image=img)
     imLabel.image = img
-    imLabel.place(x=0, y=0)
+    imLabel.place(x=100, y=85)
 
     l = tk.Label(rec1, bg='PowderBlue', width=56, height=2, font=('Courier New', 30), text='今晚我想來點......')
     l.place(x=0, y=0)
@@ -208,7 +208,7 @@ def create_page_1():
     botton1 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='湊一湊就上桌',variable=radioValue, value=1,
                              indicatoron=False, selectcolor='red',command=lambda:[assignA(), switchButtonState()])  ### command= 剩越少越好
     botton1.place(x=560, y=200)
-    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們 即使要付出代價',variable=radioValue, value=2,
+    botton2 = tk.Radiobutton(rec1, height=1, font=('Courier New', 18), text='幫我盡可能處理掉他們',variable=radioValue, value=2,
                              indicatoron=False, selectcolor='red',command=lambda:[assignB(), switchButtonState()])  ### command= 處理越多越好
     botton2.place(x=425, y=300)
     nextpagebtn = tk.Button(rec1, text="下一步", width=25 ,height=1, font=('Courier New', 18),state=tk.DISABLED, command=call_second_frame_on_top)
