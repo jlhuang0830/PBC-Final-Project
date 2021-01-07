@@ -232,7 +232,7 @@ def create_page_2():
     l_f.place(x=30, y=0)
     l_r = tk.Label(rec2, bg='MediumAquamarine', width=25, height=2, font=('Courier New', 30), text='不吃的食材')
     l_r.place(x=650, y=0)
-    hint = tk.Label(rec2, bg='gray', fg='white', width=80, height=1, font=('Courier New', 20), text='請以空格隔開不同食材')
+    hint = tk.Label(rec2, bg='gray', fg='white', width=80, height=1, font=('Courier New', 20), text='請以空格隔開不同食材，沒有不吃的食材請寫無')
     hint.place(x=0, y=100)
 
     """
